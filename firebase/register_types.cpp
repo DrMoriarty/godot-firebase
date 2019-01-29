@@ -5,11 +5,15 @@
 #include "firebase.h"
 #include "analytics.h"
 #include "remote_config.h"
+#include "database.h"
+#include "auth.h"
 
 void register_firebase_types() {
     ClassDB::register_class<Firebase>();
     ClassDB::register_class<FirebaseAnalytics>();
     ClassDB::register_class<FirebaseRemoteConfig>();
+    ClassDB::register_class<FirebaseDatabase>();
+    ClassDB::register_class<FirebaseAuth>();
 }
 
 void unregister_firebase_types() {

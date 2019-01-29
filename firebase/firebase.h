@@ -10,6 +10,7 @@ class Firebase : public Reference {
     protected:
     static firebase::App* app_ptr;
     static void _bind_methods();
+    static void createApplication();
 
     public:
     

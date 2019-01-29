@@ -11,6 +11,7 @@ class FirebaseRemoteConfig : public Reference {
     protected:
     static bool inited;
     static void _bind_methods();
+    static bool data_loaded;
 
     public:
     
@@ -20,6 +21,7 @@ class FirebaseRemoteConfig : public Reference {
     double get_double(const String& param);
     int64_t get_int(const String& param);
     String get_string(const String& param);
+    bool loaded();
 
 };
 

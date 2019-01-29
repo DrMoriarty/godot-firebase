@@ -9,20 +9,24 @@ firebase::App* Firebase::app_ptr = NULL;
 
 Firebase::Firebase() {
     if(app_ptr == NULL) {
-#if defined(__ANDROID__)
-        JNIEnv *env = ThreadAndroid::get_env();
-        app_ptr = firebase::App::Create(firebase::AppOptions(), env, _godot_instance);
-#else 
-        app_ptr = firebase::App::Create(firebase::AppOptions());
-#endif
+        createApplication();
     }
 }
 
 firebase::App* Firebase::AppId() {
     if(app_ptr == NULL) {
-        Firebase *inst = new Firebase();
+        createApplication();
     }
     return app_ptr;
+}
+
+void Firebase::createApplication() {
+#if defined(__ANDROID__)
+    JNIEnv *env = ThreadAndroid::get_env();
+    app_ptr = firebase::App::Create(firebase::AppOptions(), env, _godot_instance);
+#else 
+    app_ptr = firebase::App::Create(firebase::AppOptions());
+#endif
 }
 
 void Firebase::_bind_methods() {

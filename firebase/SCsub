@@ -9,17 +9,26 @@ if env['platform'] == 'android':
         env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_app.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_analytics.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_remote_config.a")])
+        env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_database.a")])
+        env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_auth.a")])
     elif env['android_arch'] == 'armv7':
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_app.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_analytics.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_remote_config.a")])
+        env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_database.a")])
+        env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_auth.a")])
     elif env['android_arch'] == 'x86':
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_app.a")])
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_analytics.a")])
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_remote_config.a")])
+        env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_database.a")])
+        env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_auth.a")])
     else:
         print 'WARN: Unsupported architecture for firebase module: '+env['android_arch']
 elif env['platform'] == 'ios':
     env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_app.a")])
     env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_analytics.a")])
+    env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_remote_config.a")])
+    env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_database.a")])
+    env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_auth.a")])
     

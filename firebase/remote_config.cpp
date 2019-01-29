@@ -1,16 +1,24 @@
 #include "remote_config.h"
 
 bool FirebaseRemoteConfig::inited = false;
+bool FirebaseRemoteConfig::data_loaded = false;
 
 FirebaseRemoteConfig::FirebaseRemoteConfig() {
     if(!inited) {
         firebase::App* app = Firebase::AppId();
         if(app != NULL) {
             if(firebase::remote_config::Initialize(*app) == firebase::kInitResultSuccess) {
-                if(firebase::remote_config::ActivateFetched()) {
-                    // activate preloaded configs
-                }
-                firebase::remote_config::Fetch();
+                firebase::remote_config::Fetch().OnCompletion([](const firebase::Future<void>& completed_future, void* user_data) {
+                                                                  FirebaseRemoteConfig *frc = (FirebaseRemoteConfig*)user_data;
+                                                                  if(firebase::remote_config::ActivateFetched()) {
+                                                                      // activate preloaded configs
+                                                                      print_line("Fetched remote config data activated");
+                                                                      data_loaded = true;
+                                                                      frc->emit_signal("loaded");
+                                                                  } else {
+                                                                      print_line("Fetched remote config data was not activated");
+                                                                  }
+                                                              }, this);
                 inited = true;
             }
         }
@@ -56,10 +64,17 @@ String FirebaseRemoteConfig::get_string(const String& param)
     return String(firebase::remote_config::GetString(param.utf8().ptr()).c_str());
 }
 
+bool FirebaseRemoteConfig::loaded()
+{
+    return data_loaded;
+}
+
 void FirebaseRemoteConfig::_bind_methods() {
     ClassDB::bind_method(D_METHOD("set_defaults", "params"), &FirebaseRemoteConfig::set_defaults);
     ClassDB::bind_method(D_METHOD("get_boolean", "param"), &FirebaseRemoteConfig::get_boolean);
     ClassDB::bind_method(D_METHOD("get_double", "param"), &FirebaseRemoteConfig::get_double);
     ClassDB::bind_method(D_METHOD("get_int", "param"), &FirebaseRemoteConfig::get_int);
     ClassDB::bind_method(D_METHOD("get_string", "param"), &FirebaseRemoteConfig::get_string);
+    ClassDB::bind_method(D_METHOD("loaded"), &FirebaseRemoteConfig::loaded);
+    ADD_SIGNAL(MethodInfo("loaded"));
 }
