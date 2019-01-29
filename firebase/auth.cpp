@@ -87,7 +87,8 @@ String FirebaseAuth::uid()
 
 void FirebaseAuth::sign_out()
 {
-    firebase::auth::SignOut();
+    auth->SignOut();
+    user = NULL;
 }
 
 void FirebaseAuth::_bind_methods() {
