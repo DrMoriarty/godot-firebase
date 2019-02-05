@@ -11,7 +11,6 @@ class FirebaseAuth : public Reference {
     protected:
     static bool inited;
     static firebase::auth::Auth* auth;
-    static firebase::auth::User* user;
     static firebase::auth::User::UserProfile profile;
     static void _bind_methods();
 

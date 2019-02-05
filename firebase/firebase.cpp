@@ -29,6 +29,10 @@ void Firebase::createApplication() {
 #endif
 }
 
+AppActivity Firebase::GetAppActivity() {
+    return _godot_instance;
+}
+
 void Firebase::_bind_methods() {
     //ClassDB::bind_method(D_METHOD("AppId"), &Firebase::AppId);
 }

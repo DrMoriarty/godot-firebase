@@ -110,7 +110,7 @@ void FirebaseDatabase::OnGetValue(const firebase::Future<firebase::database::Dat
 Variant FirebaseDatabase::ConvertVariant(const firebase::Variant& val)
 {
     if(val.is_null()) {
-        return Variant();
+        return Variant(NULL);
     } else if(val.is_vector()) {
         const std::vector<firebase::Variant>& vector = val.vector();
         Vector<Variant> vecRes;
@@ -137,7 +137,7 @@ Variant FirebaseDatabase::ConvertVariant(const firebase::Variant& val)
     } else if(val.is_string()) {
         return Variant(val.string_value());
     } else {
-        return Variant();
+        return Variant(NULL);
     }
 }
 

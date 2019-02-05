@@ -1,0 +1,16 @@
+
+<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3463853459608230~7613249025"/>
+
+<service android:name="com.myapppackage.application.gcm.GcmIntentService" android:exported="false">
+  <intent-filter>
+    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+  </intent-filter>
+</service>
+
+<service android:name="com.myapppackage.application.gcm.GcmIDListenerService" android:exported="false">
+  <intent-filter>
+    <action android:name="com.google.android.gms.iid.InstanceID" />
+  </intent-filter>
+</service>
+
+<service android:name="com.myapppackage.application.gcm.RegistrationIntentService" android:exported="false"/>

@@ -2,7 +2,6 @@
 
 bool FirebaseAuth::inited = false;
 firebase::auth::Auth* FirebaseAuth::auth = NULL;
-firebase::auth::User* FirebaseAuth::user = NULL;
 firebase::auth::User::UserProfile FirebaseAuth::profile;
 
 FirebaseAuth::FirebaseAuth() {
@@ -19,12 +18,11 @@ void FirebaseAuth::OnCreateUserCallback(const firebase::Future<firebase::auth::U
     // The callback is called when the Future enters the `complete` state.
     assert(result.status() == firebase::kFutureStatusComplete);
     if (result.error() == firebase::auth::kAuthErrorNone) {
-        user = *result.result();
+        firebase::auth::User* user = *result.result();
         print_line(String("Create user succeeded with name ") + user->display_name().c_str());
         user->UpdateUserProfile(profile);
         emit_signal("logged_in");
     } else {
-        FirebaseAuth::user = NULL;
         print_line(String("Created user failed with error ") + result.error_message());
     }
 }
@@ -40,16 +38,17 @@ void FirebaseAuth::sign_in_anonymously()
 
 void FirebaseAuth::sign_in_facebook(String token)
 {
-    print_line("Start sign in to Facebook");
     firebase::auth::Credential credential = firebase::auth::FacebookAuthProvider::GetCredential(token.utf8().ptr());
     firebase::auth::User* current_user = auth->current_user();
     if(current_user != NULL) {
+        print_line("Start link Facebook account to existing user");
         // link facebook account
         firebase::Future<firebase::auth::User*> result = current_user->LinkWithCredential(credential);
         result.OnCompletion([](const firebase::Future<firebase::auth::User*>& result, void* user_data) {
                                 ((FirebaseAuth*)user_data)->OnCreateUserCallback(result, user_data);
                             }, this);
     } else {
+        print_line("Start sign in to Facebook");
         // regular sign in
         firebase::Future<firebase::auth::User*> result = auth->SignInWithCredential(credential);
         result.OnCompletion([](const firebase::Future<firebase::auth::User*>& result, void* user_data) {
@@ -67,28 +66,31 @@ void FirebaseAuth::unlink_facebook()
 
 bool FirebaseAuth::is_logged_in()
 {
-    return user != NULL;
+    firebase::auth::User* current_user = auth->current_user();
+    return current_user != NULL;
 }
 
 String FirebaseAuth::user_name()
 {
-    return String(user->display_name().c_str());
+    firebase::auth::User* current_user = auth->current_user();
+    return String(current_user->display_name().c_str());
 }
 
 String FirebaseAuth::email()
 {
-    return String(user->email().c_str());
+    firebase::auth::User* current_user = auth->current_user();
+    return String(current_user->email().c_str());
 }
 
 String FirebaseAuth::uid()
 {
-    return String(user->uid().c_str());
+    firebase::auth::User* current_user = auth->current_user();
+    return String(current_user->uid().c_str());
 }
 
 void FirebaseAuth::sign_out()
 {
     auth->SignOut();
-    user = NULL;
 }
 
 void FirebaseAuth::_bind_methods() {
