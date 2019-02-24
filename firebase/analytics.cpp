@@ -47,8 +47,14 @@ void FirebaseAnalytics::log_params(const String& event, const Dictionary& params
             pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant((int)val));
         else if(val.get_type() == Variant::REAL)
             pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant((double)val));
-        else
+        else if (val.get_type() == Variant::STRING)
             pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant(((String)val).utf8().ptr()));
+        else if(val.get_type() == Variant::BOOL)
+            pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant((bool)val));
+        else {
+            pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant(false));
+            print_line(String("Unknown variant type: ") + itos(val.get_type()));
+        }
     }
     firebase::analytics::LogEvent(event.utf8().ptr(), pars, params.size());
 }

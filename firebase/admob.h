@@ -123,7 +123,7 @@ class FirebaseAdmob : public Reference {
     static firebase::admob::AdRequest my_ad_request;
     static firebase::admob::BannerView *sharedBannerView;
     static firebase::admob::InterstitialAd *sharedInterstitialAd;
-    static bool rewarded_inited;
+    static int rewarded_inited;
 
     static void _bind_methods();
     firebase::admob::AdParent getAdParent();

@@ -10,13 +10,17 @@ FirebaseRemoteConfig::FirebaseRemoteConfig() {
             if(firebase::remote_config::Initialize(*app) == firebase::kInitResultSuccess) {
                 firebase::remote_config::Fetch().OnCompletion([](const firebase::Future<void>& completed_future, void* user_data) {
                                                                   FirebaseRemoteConfig *frc = (FirebaseRemoteConfig*)user_data;
-                                                                  if(firebase::remote_config::ActivateFetched()) {
-                                                                      // activate preloaded configs
-                                                                      print_line("Fetched remote config data activated");
-                                                                      data_loaded = true;
-                                                                      frc->emit_signal("loaded");
+                                                                  if(completed_future.status() == firebase::kFutureStatusComplete) {
+                                                                      if(firebase::remote_config::ActivateFetched()) {
+                                                                          // activate preloaded configs
+                                                                          print_line("[RemConf] Fetched remote config data activated");
+                                                                          data_loaded = true;
+                                                                          frc->emit_signal("loaded");
+                                                                      } else {
+                                                                          print_line("[RemConf] Fetched remote config data was not activated");
+                                                                      }
                                                                   } else {
-                                                                      print_line("Fetched remote config data was not activated");
+                                                                      print_line("[RemConf] Fetch data failed");
                                                                   }
                                                               }, this);
                 inited = true;

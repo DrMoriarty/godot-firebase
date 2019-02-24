@@ -10,10 +10,10 @@ void FirebaseAdmob::BannerLoadCallback(const firebase::Future<void>& future, voi
     BannerSettings *settings = static_cast<BannerSettings*>(user_data);
     //send signal with banner load status
     if (future.error() == firebase::admob::kAdMobErrorNone) {
-        print_line("Banner load complete");
+        print_line("[AdMob] Banner load complete");
         settings->controller->emit_signal("banner_loading_result", true);
     } else {
-        print_line(String("Banner load error: ") + itos(future.error()));
+        print_line(String("[AdMob] Banner load error: ") + itos(future.error()));
         settings->controller->emit_signal("banner_loading_result", false);
     }
 }
@@ -21,12 +21,12 @@ void FirebaseAdmob::BannerLoadCallback(const firebase::Future<void>& future, voi
 void FirebaseAdmob::BannerInitCallback(const firebase::Future<void>& future, void* user_data) {
     BannerSettings *settings = static_cast<BannerSettings*>(user_data);
     if (future.error() == firebase::admob::kAdMobErrorNone) {
-        print_line("Banner init complete");
+        print_line("[AdMob] Banner init complete");
         settings->bannerView->LoadAd(my_ad_request);
         settings->bannerView->LoadAdLastResult().OnCompletion(FirebaseAdmob::BannerLoadCallback, settings);
     } else {
         // send signal with banner init failed status
-        print_line(String("Banner init error: ") + itos(future.error()));
+        print_line(String("[AdMob] Banner init error: ") + itos(future.error()));
         settings->controller->emit_signal("banner_loading_result", false);
     }
 }
@@ -34,10 +34,10 @@ void FirebaseAdmob::BannerInitCallback(const firebase::Future<void>& future, voi
 void FirebaseAdmob::BannerHideCallback(const firebase::Future<void>& future, void* user_data) {
     firebase::admob::BannerView *bannerView = static_cast<firebase::admob::BannerView*>(user_data);
     if (future.error() == firebase::admob::kAdMobErrorNone) {
-        print_line("Banner hide complete");
+        print_line("[AdMob] Banner hide complete");
         bannerView->Destroy();
     } else {
-        print_line(String("Banner hide error: ") + itos(future.error()));
+        print_line(String("[AdMob] Banner hide error: ") + itos(future.error()));
     }
 }
 
@@ -52,10 +52,10 @@ void FirebaseAdmob::InterstitialLoadCallback(const firebase::Future<void>& futur
     InterstitialSettings *settings = static_cast<InterstitialSettings*>(user_data);
     // send signal with loading status
     if (future.error() == firebase::admob::kAdMobErrorNone) {
-        print_line("Interstitial load complete");
+        print_line("[AdMob] Interstitial load complete");
         settings->controller->emit_signal("interstitial_loading_result", true);
     } else {
-        print_line(String("Interstitial load error: ") + itos(future.error()));
+        print_line(String("[AdMob] Interstitial load error: ") + itos(future.error()));
         settings->controller->emit_signal("interstitial_loading_result", false);
     }
 }
@@ -65,9 +65,9 @@ void FirebaseAdmob::InterstitialInitCallback(const firebase::Future<void>& futur
     if (future.error() == firebase::admob::kAdMobErrorNone) {
         settings->interstitial_ad->LoadAd(my_ad_request);
         settings->interstitial_ad->LoadAdLastResult().OnCompletion(InterstitialLoadCallback, settings);
-        print_line("Interstitial init complete");
+        print_line("[AdMob] Interstitial init complete");
     } else {
-        print_line(String("Interstitial init error: ") + itos(future.error()));
+        print_line(String("[AdMob] Interstitial init error: ") + itos(future.error()));
         // send signal with init status
         settings->controller->emit_signal("interstitial_loading_result", false);
     }
@@ -83,10 +83,10 @@ void FirebaseAdmob::RewardedLoadedCallback(const firebase::Future<void>& future,
     RewardedSettings *settings = static_cast<RewardedSettings*>(user_data);
     // send signal with loading status
     if (future.error() == firebase::admob::kAdMobErrorNone) {
-        print_line("Rewarded load complete");
+        print_line("[AdMob] Rewarded load complete");
         settings->controller->emit_signal("rewarded_loading_result", true);
     } else {
-        print_line(String("Rewarded load error: ") + itos(future.error()));
+        print_line(String("[AdMob] Rewarded load error: ") + itos(future.error()));
         settings->controller->emit_signal("rewarded_loading_result", false);
     }
 }
@@ -94,12 +94,13 @@ void FirebaseAdmob::RewardedLoadedCallback(const firebase::Future<void>& future,
 void FirebaseAdmob::RewardedInitCallback(const firebase::Future<void>& future, void* user_data) {
     RewardedSettings *settings = static_cast<RewardedSettings*>(user_data);
     if (future.error() == firebase::admob::kAdMobErrorNone) {
-        rewarded_inited = true;
+        rewarded_inited = 2;
         firebase::admob::rewarded_video::LoadAd(settings->adId.c_str(), my_ad_request);
         firebase::admob::rewarded_video::LoadAdLastResult().OnCompletion(FirebaseAdmob::RewardedLoadedCallback, settings);
-        print_line("Rewarded init complete");
+        print_line("[AdMob] Rewarded init complete");
     } else {
-        print_line(String("Rewarded init error: ") + itos(future.error()));
+        rewarded_inited = 0;
+        print_line(String("[AdMob] Rewarded init error: ") + itos(future.error()));
         // send signal with inited error
         settings->controller->emit_signal("rewarded_loading_result", false);
     }
@@ -118,7 +119,7 @@ const char* FirebaseAdmob::testingDevices[100];
 firebase::admob::AdRequest FirebaseAdmob::my_ad_request = {};
 firebase::admob::BannerView* FirebaseAdmob::sharedBannerView = NULL;
 firebase::admob::InterstitialAd* FirebaseAdmob::sharedInterstitialAd = NULL;
-bool FirebaseAdmob::rewarded_inited = false;
+int FirebaseAdmob::rewarded_inited = 0;
 
 FirebaseAdmob::FirebaseAdmob() {
 }
@@ -139,6 +140,7 @@ firebase::admob::AdParent FirebaseAdmob::getAdParent() {
 }
 
 void FirebaseAdmob::AddTestDevice(String deviceId) {
+    print_line("[AdMob] AddTestDevice");
     std::string did(deviceId.utf8().ptr());
     testDeviceIds.push_back(did);
 
@@ -150,6 +152,7 @@ void FirebaseAdmob::AddTestDevice(String deviceId) {
 }
 
 void FirebaseAdmob::LoadBanner(String bannerId) {
+    print_line("[AdMob] LoadBanner");
     firebase::admob::AdSize ad_size;
     ad_size.ad_size_type = firebase::admob::kAdSizeStandard;
     ad_size.width = 320;
@@ -161,6 +164,7 @@ void FirebaseAdmob::LoadBanner(String bannerId) {
 }
 
 bool FirebaseAdmob::IsBannerLoaded() {
+    print_line("[AdMob] IsBannerLoaded");
     if (sharedBannerView != NULL &&
         sharedBannerView->LoadAdLastResult().status() == firebase::kFutureStatusComplete &&
         sharedBannerView->LoadAdLastResult().error() == firebase::admob::kAdMobErrorNone) {
@@ -171,17 +175,19 @@ bool FirebaseAdmob::IsBannerLoaded() {
 }
 
 void FirebaseAdmob::ShowBanner() {
+    print_line("[AdMob] ShowBanner");
     if(sharedBannerView != NULL &&
        sharedBannerView->LoadAdLastResult().status() == firebase::kFutureStatusComplete &&
        sharedBannerView->LoadAdLastResult().error() == firebase::admob::kAdMobErrorNone) {
         sharedBannerView->SetListener(new MyBannerViewListener(this));
         sharedBannerView->Show();
     } else {
-        print_line("Banner not loaded");
+        print_line("[AdMob] Banner not loaded");
     }
 }
 
 void FirebaseAdmob::CloseBanner() {
+    print_line("[AdMob] CloseBanner");
     if(sharedBannerView != NULL &&
        sharedBannerView->ShowLastResult().status() == firebase::kFutureStatusComplete &&
        sharedBannerView->ShowLastResult().error() == firebase::admob::kAdMobErrorNone) {
@@ -189,11 +195,12 @@ void FirebaseAdmob::CloseBanner() {
         sharedBannerView->HideLastResult().OnCompletion(FirebaseAdmob::BannerHideCallback, sharedBannerView);
         sharedBannerView = NULL;
     } else {
-        print_line("Banner not shown");
+        print_line("[AdMob] Banner not shown");
     }
 }
 
 void FirebaseAdmob::LoadInterstitial(String bannerId) {
+    print_line("[AdMob] LoadInterstitial");
     sharedInterstitialAd = new firebase::admob::InterstitialAd();
     InterstitialSettings *settings = new InterstitialSettings(sharedInterstitialAd, this);
     sharedInterstitialAd->Initialize(getAdParent(), bannerId.utf8().ptr());
@@ -201,6 +208,7 @@ void FirebaseAdmob::LoadInterstitial(String bannerId) {
 }
 
 bool FirebaseAdmob::IsInterstitialLoaded() {
+    print_line("[AdMob] IsInterstitialLoaded");
     if (sharedInterstitialAd != NULL &&
         sharedInterstitialAd->LoadAdLastResult().status() == firebase::kFutureStatusComplete &&
         sharedInterstitialAd->LoadAdLastResult().error() == firebase::admob::kAdMobErrorNone) {
@@ -211,30 +219,36 @@ bool FirebaseAdmob::IsInterstitialLoaded() {
 }
 
 void FirebaseAdmob::ShowInterstitial() {
+    print_line("[AdMob] ShowInterstitial");
     if (sharedInterstitialAd != NULL &&
         sharedInterstitialAd->LoadAdLastResult().status() == firebase::kFutureStatusComplete &&
         sharedInterstitialAd->LoadAdLastResult().error() == firebase::admob::kAdMobErrorNone) {
         sharedInterstitialAd->SetListener(new MyInterstitialAdListener(this));
         sharedInterstitialAd->Show();
     } else {
-        print_line("Interstitial not loaded");
+        print_line("[AdMob] Interstitial not loaded");
     }
 }
 
 void FirebaseAdmob::LoadRewarded(String bannerId) {
+    print_line("[AdMob] LoadRewarded");
     std::string bid(bannerId.utf8().ptr());
     RewardedSettings *settings = new RewardedSettings(bid, this);
-    if(!rewarded_inited) {
+    if(rewarded_inited == 0) {
+        rewarded_inited = 1;
         firebase::admob::rewarded_video::Initialize();
         firebase::admob::rewarded_video::InitializeLastResult().OnCompletion(FirebaseAdmob::RewardedInitCallback, settings);
-    } else {
+    } else if(rewarded_inited == 2) {
         firebase::admob::rewarded_video::LoadAd(settings->adId.c_str(), my_ad_request);
         firebase::admob::rewarded_video::LoadAdLastResult().OnCompletion(FirebaseAdmob::RewardedLoadedCallback, settings);
+    } else {
+        print_line("[AdMob] Rewarded initialization not finished yet!");
     }
 }
 
 bool FirebaseAdmob::IsRewardedLoaded() {
-    if (rewarded_inited &&
+    print_line("[AdMob] IsRewardedLoaded");
+    if (rewarded_inited == 2 &&
         firebase::admob::rewarded_video::LoadAdLastResult().status() == firebase::kFutureStatusComplete &&
         firebase::admob::rewarded_video::LoadAdLastResult().error() == firebase::admob::kAdMobErrorNone) {
         return true;
@@ -244,13 +258,14 @@ bool FirebaseAdmob::IsRewardedLoaded() {
 }
 
 void FirebaseAdmob::ShowRewarded() {
+    print_line("[AdMob] ShowRewarded");
     if (firebase::admob::rewarded_video::LoadAdLastResult().status() == firebase::kFutureStatusComplete &&
         firebase::admob::rewarded_video::LoadAdLastResult().error() == firebase::admob::kAdMobErrorNone) {
 
         firebase::admob::rewarded_video::SetListener(new MyRewardedVideoListener(this));
         firebase::admob::rewarded_video::Show(getAdParent());
     } else {
-        print_line("Rewarded not loaded");
+        print_line("[AdMob] Rewarded not loaded");
     }
 }
 

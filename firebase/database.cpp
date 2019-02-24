@@ -20,7 +20,7 @@ void FirebaseDatabase::SetDBRoot(const Array& keys)
 {
     dbref = database->GetReference();
     dbref = GetReferenceToPath(keys);
-    print_line(String("Set DB root: ")+dbref.key());
+    print_line(String("[RTDB] Set DB root: ")+dbref.key());
 }
 
 firebase::database::DatabaseReference FirebaseDatabase::GetReferenceToPath(const Array& keys)
@@ -103,7 +103,7 @@ void FirebaseDatabase::OnGetValue(const firebase::Future<firebase::database::Dat
         Variant value = ConvertVariant(val);
         emit_signal("get_value", key, value);
     } else {
-        print_line(String("Reading DB failed with error ") + result.error_message());
+        print_line(String("[RTDB] Reading DB failed with error ") + result.error_message());
     }
 }
 
