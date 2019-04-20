@@ -1,7 +1,7 @@
 def can_build(env, platform):
     if platform == "android":
 	return True
-    if platform == "ios":
+    if platform == "iphone":
 	return True
     return False
 
@@ -35,5 +35,7 @@ def configure(env):
 	env.android_add_dependency("implementation 'com.google.firebase:firebase-ads:17.1.2'")
 	env.android_add_dependency("implementation 'com.google.android.gms:play-services-ads:17.1.2'")
 	env.android_add_to_manifest("AndroidManifest.xml")
-    elif (env['platform'] == 'ios'):
+	# Functions
+	env.android_add_dependency("implementation 'com.google.firebase:firebase-functions:16.3.0'")
+    elif (env['platform'] == 'iphone'):
 	pass

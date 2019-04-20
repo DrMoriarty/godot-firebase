@@ -8,6 +8,7 @@
 #include "database.h"
 #include "auth.h"
 #include "admob.h"
+#include "functions.h"
 
 void register_firebase_types() {
     ClassDB::register_class<Firebase>();
@@ -16,6 +17,7 @@ void register_firebase_types() {
     ClassDB::register_class<FirebaseDatabase>();
     ClassDB::register_class<FirebaseAuth>();
     ClassDB::register_class<FirebaseAdmob>();
+    ClassDB::register_class<FirebaseFunctions>();
 }
 
 void unregister_firebase_types() {

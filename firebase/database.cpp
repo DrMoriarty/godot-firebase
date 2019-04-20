@@ -1,4 +1,5 @@
 #include "database.h"
+#include "convertor.h"
 
 bool FirebaseDatabase::inited = false;
 firebase::database::Database *FirebaseDatabase::database = NULL;
@@ -43,7 +44,7 @@ void FirebaseDatabase::SetValue(const Array& keys, const Variant& value)
     else if(value.get_type() == Variant::REAL)
         ref.SetValue(firebase::Variant((double)value));
     else
-        ref.SetValue(firebase::Variant(((String)value).utf8().ptr()));
+        ref.SetValue(Convertor::toFirebaseVariant((String)value));
 }
 
 String FirebaseDatabase::PushChild(const Array& keys)
@@ -65,7 +66,7 @@ void FirebaseDatabase::UpdateChildren(const Array& paths, const Dictionary& para
         else if(val.get_type() == Variant::REAL)
             entryValues[strKey] = firebase::Variant((double)val);
         else
-            entryValues[strKey] = firebase::Variant(((String)val).utf8().ptr());
+            entryValues[strKey] = Convertor::toFirebaseVariant((String)val);
     }
     
     std::map<std::string, firebase::Variant> childUpdates;// = new std::map<std::string, firebase::Variant>();
@@ -110,7 +111,7 @@ void FirebaseDatabase::OnGetValue(const firebase::Future<firebase::database::Dat
 Variant FirebaseDatabase::ConvertVariant(const firebase::Variant& val)
 {
     if(val.is_null()) {
-        return Variant(NULL);
+        return Variant((void*)NULL);
     } else if(val.is_vector()) {
         const std::vector<firebase::Variant>& vector = val.vector();
         Vector<Variant> vecRes;
@@ -137,7 +138,7 @@ Variant FirebaseDatabase::ConvertVariant(const firebase::Variant& val)
     } else if(val.is_string()) {
         return Variant(val.string_value());
     } else {
-        return Variant(NULL);
+        return Variant((void*)NULL);
     }
 }
 

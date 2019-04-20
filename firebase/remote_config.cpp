@@ -1,4 +1,5 @@
 #include "remote_config.h"
+#include "convertor.h"
 
 bool FirebaseRemoteConfig::inited = false;
 bool FirebaseRemoteConfig::data_loaded = false;
@@ -42,7 +43,7 @@ void FirebaseRemoteConfig::set_defaults(const Dictionary& params)
         else if(val.get_type() == Variant::REAL)
             ckv.value = firebase::Variant((double)val);
         else
-            ckv.value = firebase::Variant(((String)val).utf8().ptr());
+            ckv.value = Convertor::toFirebaseVariant((String)val);
         pars[i] = ckv;
     }
     firebase::remote_config::SetDefaults(pars, params.size());

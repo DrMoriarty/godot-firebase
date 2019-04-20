@@ -1,4 +1,5 @@
 #include "analytics.h"
+#include "convertor.h"
 
 bool FirebaseAnalytics::inited = false;
 
@@ -48,7 +49,7 @@ void FirebaseAnalytics::log_params(const String& event, const Dictionary& params
         else if(val.get_type() == Variant::REAL)
             pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant((double)val));
         else if (val.get_type() == Variant::STRING)
-            pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant(((String)val).utf8().ptr()));
+            pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), Convertor::toFirebaseVariant((String)val));
         else if(val.get_type() == Variant::BOOL)
             pars[i] = firebase::analytics::Parameter(((String)key).utf8().ptr(), firebase::Variant((bool)val));
         else {

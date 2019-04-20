@@ -105,4 +105,3 @@ void FirebaseAuth::_bind_methods() {
     ADD_SIGNAL(MethodInfo("logged_in"));
 }
 
-

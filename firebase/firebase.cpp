@@ -4,6 +4,9 @@
 #include "thread_jandroid.h"
 extern jobject _godot_instance;
 #endif
+#if defined(__APPLE__)
+extern void* _instance;
+#endif
 
 firebase::App* Firebase::app_ptr = NULL;
 
@@ -30,7 +33,12 @@ void Firebase::createApplication() {
 }
 
 AppActivity Firebase::GetAppActivity() {
+#if defined(__ANDROID__)
     return _godot_instance;
+#endif
+#if defined(__APPLE__)
+    return _instance;
+#endif
 }
 
 void Firebase::_bind_methods() {
