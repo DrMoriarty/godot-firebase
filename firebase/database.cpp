@@ -11,6 +11,7 @@ FirebaseDatabase::FirebaseDatabase()
         firebase::App* app = Firebase::AppId();
         if(app != NULL) {
             database = firebase::database::Database::GetInstance(app);
+            database->set_persistence_enabled(true);
             dbref = database->GetReference();
             inited = true;
         }
