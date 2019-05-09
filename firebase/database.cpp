@@ -4,6 +4,66 @@
 bool FirebaseDatabase::inited = false;
 firebase::database::Database *FirebaseDatabase::database = NULL;
 firebase::database::DatabaseReference FirebaseDatabase::dbref;
+FirebaseChildListener *FirebaseDatabase::listener = NULL;
+
+////////////////////////////
+//
+// FirebaseChildListener
+//
+
+FirebaseChildListener::FirebaseChildListener(FirebaseDatabase* db): database(db)
+{
+}
+
+void FirebaseChildListener::OnCancelled(const firebase::database::Error & error, const char *error_message)
+{
+    print_line(String("[RTDB] ChildListener: OnCancelled"));
+}
+
+void FirebaseChildListener::OnChildAdded(const firebase::database::DataSnapshot & snapshot, const char *previous_sibling_key)
+{
+    print_line(String("[RTDB] ChildListener: OnChildAdded ") + snapshot.key());
+
+    String key(snapshot.key());
+    firebase::Variant val = snapshot.value();
+    Variant value = Convertor::fromFirebaseVariant(val);
+    database->emit_signal("child_added", key, value);
+}
+
+void FirebaseChildListener::OnChildChanged(const firebase::database::DataSnapshot & snapshot, const char *previous_sibling_key)
+{
+    print_line(String("[RTDB] ChildListener: OnChildChanged ") + snapshot.key());
+
+    String key(snapshot.key());
+    firebase::Variant val = snapshot.value();
+    Variant value = Convertor::fromFirebaseVariant(val);
+    database->emit_signal("child_changed", key, value);
+}
+
+void FirebaseChildListener::OnChildMoved(const firebase::database::DataSnapshot & snapshot, const char *previous_sibling_key)
+{
+    print_line(String("[RTDB] ChildListener: OnChildMoved ") + snapshot.key());
+
+    String key(snapshot.key());
+    firebase::Variant val = snapshot.value();
+    Variant value = Convertor::fromFirebaseVariant(val);
+    database->emit_signal("child_moved", key, value);
+}
+
+void FirebaseChildListener::OnChildRemoved(const firebase::database::DataSnapshot & snapshot)
+{
+    print_line(String("[RTDB] ChildListener: OnChildRemoved ") + snapshot.key());
+
+    String key(snapshot.key());
+    firebase::Variant val = snapshot.value();
+    Variant value = Convertor::fromFirebaseVariant(val);
+    database->emit_signal("child_removed", key, value);
+}
+
+////////////////////////////
+//
+// FirebaseDatabase
+//
 
 FirebaseDatabase::FirebaseDatabase()
 {
@@ -20,9 +80,17 @@ FirebaseDatabase::FirebaseDatabase()
 
 void FirebaseDatabase::SetDBRoot(const Array& keys)
 {
+    if(dbref.is_valid()) {
+        dbref.RemoveAllChildListeners();
+        dbref.RemoveAllValueListeners();
+    }
     dbref = database->GetReference();
     dbref = GetReferenceToPath(keys);
     print_line(String("[RTDB] Set DB root: ")+dbref.key());
+    if(listener == NULL) {
+        listener = new FirebaseChildListener(this);
+    }
+    dbref.AddChildListener(listener);
 }
 
 firebase::database::DatabaseReference FirebaseDatabase::GetReferenceToPath(const Array& keys)
@@ -102,13 +170,14 @@ void FirebaseDatabase::OnGetValue(const firebase::Future<firebase::database::Dat
     if (result.error() == firebase::database::kErrorNone) {
         String key(result.result()->key());
         firebase::Variant val = result.result()->value();
-        Variant value = ConvertVariant(val);
+        Variant value = Convertor::fromFirebaseVariant(val);
         emit_signal("get_value", key, value);
     } else {
         print_line(String("[RTDB] Reading DB failed with error ") + result.error_message());
     }
 }
 
+/*
 Variant FirebaseDatabase::ConvertVariant(const firebase::Variant& val)
 {
     if(val.is_null()) {
@@ -142,6 +211,7 @@ Variant FirebaseDatabase::ConvertVariant(const firebase::Variant& val)
         return Variant((void*)NULL);
     }
 }
+*/
 
 void FirebaseDatabase::_bind_methods() {
 
@@ -153,4 +223,8 @@ void FirebaseDatabase::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_value", "keys"), &FirebaseDatabase::GetValue);
 
     ADD_SIGNAL(MethodInfo("get_value"));
+    ADD_SIGNAL(MethodInfo("child_added"));
+    ADD_SIGNAL(MethodInfo("child_changed"));
+    ADD_SIGNAL(MethodInfo("child_moved"));
+    ADD_SIGNAL(MethodInfo("child_removed"));
 }
