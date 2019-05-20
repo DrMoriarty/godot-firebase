@@ -37,5 +37,9 @@ def configure(env):
 	env.android_add_to_manifest("AndroidManifest.xml")
 	# Functions
 	env.android_add_dependency("implementation 'com.google.firebase:firebase-functions:16.3.0'")
+	# Messaging
+	env.android_add_dependency("implementation 'com.google.firebase:firebase-messaging:17.3.4'")
+	# In-App Messaging
+	env.android_add_dependency("implementation 'com.google.firebase:firebase-inappmessaging-display:17.1.1'")
     elif (env['platform'] == 'iphone'):
 	pass

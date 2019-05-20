@@ -750,6 +750,23 @@ static const char *const kParameterLevelName = "level_name";
 ///
 /// @endif
 static const char *const kParameterSuccess = "success";
+
+/// Indicates that the associated event should either extend the current
+/// session or start a new session if no session was active when the event
+/// was logged. Specify YES to extend the current session or to start a
+/// new session; any other value will not extend or start a session.
+///
+/// @if cpp_examples
+/// @code{.cpp}
+/// using namespace firebase::analytics;
+/// Parameter parameters[] = {
+///    Parameter(kParameterExtendSession, @YES),
+///    // ...
+///  };
+/// @endcode
+///
+/// @endif
+static const char *const kParameterExtendSession = "extend_session";
 /// @}
 
 } // namespace analytics

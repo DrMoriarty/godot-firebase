@@ -34,7 +34,7 @@
 -keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthProvider$ForceResendingToken { *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthProvider$OnVerificationStateChangedCallbacks { *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.PlayGamesAuthProvider{ *; }
--keep,includedescriptorclasses public class com.google.firebase.auth.ProviderQueryResult{ *; }
+-keep,includedescriptorclasses public class com.google.firebase.auth.SignInMethodQueryResult{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.TwitterAuthProvider{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.UserInfo{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.UserProfileChangeRequest$Builder{ *; }
