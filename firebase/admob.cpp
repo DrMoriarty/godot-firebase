@@ -128,8 +128,8 @@ void FirebaseAdmob::Init(String advertisingId) {
     if(!inited) {
         firebase::App* app = Firebase::AppId();
         if(app != NULL) {
-            ApplicationId = std::string(advertisingId.utf8().ptr());
-            firebase::admob::Initialize(*app, advertisingId.utf8().ptr());
+            ApplicationId = std::string(advertisingId.utf8().get_data());
+            firebase::admob::Initialize(*app, advertisingId.utf8().get_data());
             inited = true;
         }
     }
@@ -141,7 +141,7 @@ firebase::admob::AdParent FirebaseAdmob::getAdParent() {
 
 void FirebaseAdmob::AddTestDevice(String deviceId) {
     print_line("[AdMob] AddTestDevice");
-    std::string did(deviceId.utf8().ptr());
+    std::string did(deviceId.utf8().get_data());
     testDeviceIds.push_back(did);
 
     my_ad_request.test_device_id_count = testDeviceIds.size();
@@ -159,7 +159,7 @@ void FirebaseAdmob::LoadBanner(String bannerId) {
     ad_size.height = 50;
     sharedBannerView = new firebase::admob::BannerView();
     BannerSettings *settings = new BannerSettings(sharedBannerView, this);
-    sharedBannerView->Initialize(getAdParent(), bannerId.utf8().ptr(), ad_size);
+    sharedBannerView->Initialize(getAdParent(), bannerId.utf8().get_data(), ad_size);
     sharedBannerView->InitializeLastResult().OnCompletion(FirebaseAdmob::BannerInitCallback, settings);
 }
 
@@ -203,7 +203,7 @@ void FirebaseAdmob::LoadInterstitial(String bannerId) {
     print_line("[AdMob] LoadInterstitial");
     sharedInterstitialAd = new firebase::admob::InterstitialAd();
     InterstitialSettings *settings = new InterstitialSettings(sharedInterstitialAd, this);
-    sharedInterstitialAd->Initialize(getAdParent(), bannerId.utf8().ptr());
+    sharedInterstitialAd->Initialize(getAdParent(), bannerId.utf8().get_data());
     sharedInterstitialAd->InitializeLastResult().OnCompletion(FirebaseAdmob::InterstitialInitCallback, settings);
 }
 
@@ -232,7 +232,7 @@ void FirebaseAdmob::ShowInterstitial() {
 
 void FirebaseAdmob::LoadRewarded(String bannerId) {
     print_line("[AdMob] LoadRewarded");
-    std::string bid(bannerId.utf8().ptr());
+    std::string bid(bannerId.utf8().get_data());
     RewardedSettings *settings = new RewardedSettings(bid, this);
     if(rewarded_inited == 0) {
         rewarded_inited = 1;

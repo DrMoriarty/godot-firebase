@@ -37,7 +37,7 @@ void FirebaseRemoteConfig::set_defaults(const Dictionary& params)
         Variant key = params.get_key_at_index(i);
         Variant val = params.get_value_at_index(i);
         firebase::remote_config::ConfigKeyValueVariant ckv;
-        ckv.key = ((String)key).utf8().ptr();
+        ckv.key = ((String)key).utf8().get_data();
         if(val.get_type() == Variant::INT)
             ckv.value = firebase::Variant((int)val);
         else if(val.get_type() == Variant::REAL)
@@ -51,22 +51,22 @@ void FirebaseRemoteConfig::set_defaults(const Dictionary& params)
 
 bool FirebaseRemoteConfig::get_boolean(const String& param)
 {
-    return firebase::remote_config::GetBoolean(param.utf8().ptr());
+    return firebase::remote_config::GetBoolean(param.utf8().get_data());
 }
 
 double FirebaseRemoteConfig::get_double(const String& param)
 {
-    return firebase::remote_config::GetDouble(param.utf8().ptr());
+    return firebase::remote_config::GetDouble(param.utf8().get_data());
 }
 
 int64_t FirebaseRemoteConfig::get_int(const String& param)
 {
-    return firebase::remote_config::GetLong(param.utf8().ptr());
+    return firebase::remote_config::GetLong(param.utf8().get_data());
 }
 
 String FirebaseRemoteConfig::get_string(const String& param)
 {
-    return String(firebase::remote_config::GetString(param.utf8().ptr()).c_str());
+    return String(firebase::remote_config::GetString(param.utf8().get_data()).c_str());
 }
 
 bool FirebaseRemoteConfig::loaded()

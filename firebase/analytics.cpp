@@ -15,49 +15,49 @@ FirebaseAnalytics::FirebaseAnalytics() {
 
 void FirebaseAnalytics::log_event(const String& event)
 {
-    std::string ev(event.utf8().ptr());
+    std::string ev(event.utf8().get_data());
     firebase::analytics::LogEvent(ev.c_str());
 }
 
 void FirebaseAnalytics::log_int(const String& event, const String& parameter, int value)
 {
-    std::string ev(event.utf8().ptr());
-    std::string par(parameter.utf8().ptr());
+    std::string ev(event.utf8().get_data());
+    std::string par(parameter.utf8().get_data());
     firebase::analytics::LogEvent(ev.c_str(), par.c_str(), value);
 }
 
 void FirebaseAnalytics::log_long(const String& event, const String& parameter, int64_t value)
 {
-    std::string ev(event.utf8().ptr());
-    std::string par(parameter.utf8().ptr());
+    std::string ev(event.utf8().get_data());
+    std::string par(parameter.utf8().get_data());
     firebase::analytics::LogEvent(ev.c_str(), par.c_str(), value);
 }
 
 void FirebaseAnalytics::log_double(const String& event, const String& parameter, double value)
 {
-    std::string ev(event.utf8().ptr());
-    std::string par(parameter.utf8().ptr());
+    std::string ev(event.utf8().get_data());
+    std::string par(parameter.utf8().get_data());
     firebase::analytics::LogEvent(ev.c_str(), par.c_str(), value);
 }
 
 void FirebaseAnalytics::log_string(const String& event, const String& parameter, const String& value)
 {
-    std::string ev(event.utf8().ptr());
-    std::string par(parameter.utf8().ptr());
-    std::string val(value.utf8().ptr());
+    std::string ev(event.utf8().get_data());
+    std::string par(parameter.utf8().get_data());
+    std::string val(value.utf8().get_data());
     firebase::analytics::LogEvent(ev.c_str(), par.c_str(), val.c_str());
 }
 
 void FirebaseAnalytics::log_params(const String& event, const Dictionary& params)
 {
-    std::string ev(event.utf8().ptr());
+    std::string ev(event.utf8().get_data());
     firebase::analytics::Parameter pars[params.size()];
     for(int i=0; i<params.size(); i++) {
         Variant key = params.get_key_at_index(i);
         Variant val = params.get_value_at_index(i);
         std::string strKey;
         if(key.get_type() == Variant::STRING) {
-            strKey = std::string(((String)key).utf8().ptr());
+            strKey = std::string(((String)key).utf8().get_data());
         } else {
             print_line(String("Unknown key type: ") + itos(val.get_type()));
             continue;
@@ -80,21 +80,21 @@ void FirebaseAnalytics::log_params(const String& event, const Dictionary& params
 
 void FirebaseAnalytics::user_property(const String& name, const String& property)
 {
-    std::string n(name.utf8().ptr());
-    std::string p(property.utf8().ptr());
+    std::string n(name.utf8().get_data());
+    std::string p(property.utf8().get_data());
     firebase::analytics::SetUserProperty(n.c_str(), p.c_str());
 }
 
 void FirebaseAnalytics::user_id(const String& user_id)
 {
-    std::string uid(user_id.utf8().ptr());
+    std::string uid(user_id.utf8().get_data());
     firebase::analytics::SetUserId(uid.c_str());
 }
 
 void FirebaseAnalytics::screen_name(const String& screen, const String& screen_class)
 {
-    std::string sc(screen.utf8().ptr());
-    std::string cl(screen_class.utf8().ptr());
+    std::string sc(screen.utf8().get_data());
+    std::string cl(screen_class.utf8().get_data());
     firebase::analytics::SetCurrentScreen(sc.c_str(), cl.c_str());
 }
 

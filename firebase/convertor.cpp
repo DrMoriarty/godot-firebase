@@ -36,7 +36,7 @@ Variant Convertor::fromFirebaseVariant(const firebase::Variant& arg)
 
 firebase::Variant Convertor::toFirebaseVariant(const String& arg)
 {
-    std::string tmp(arg.utf8().ptr());
+    std::string tmp(arg.utf8().get_data());
     return firebase::Variant(tmp);
 }
 

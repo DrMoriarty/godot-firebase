@@ -99,7 +99,7 @@ firebase::database::DatabaseReference FirebaseDatabase::GetReferenceToPath(const
     for(int i=0; i<keys.size(); i++) {
         Variant key = keys[i];
         if(key.get_type() == Variant::STRING) {
-            ref = ref.Child(((String)key).utf8().ptr());
+            ref = ref.Child(((String)key).utf8().get_data());
         }
     }
     return ref;
@@ -129,7 +129,7 @@ void FirebaseDatabase::UpdateChildren(const Array& paths, const Dictionary& para
     for(int i=0; i<params.size(); i++) {
         Variant key = params.get_key_at_index(i);
         Variant val = params.get_value_at_index(i);
-        std::string strKey = std::string(((String)key).utf8().ptr());
+        std::string strKey = std::string(((String)key).utf8().get_data());
         if(val.get_type() == Variant::INT)
             entryValues[strKey] = firebase::Variant((int)val);
         else if(val.get_type() == Variant::REAL)
@@ -142,7 +142,7 @@ void FirebaseDatabase::UpdateChildren(const Array& paths, const Dictionary& para
     for(int i=0; i<paths.size(); i++) {
         Variant path = paths[i];
         if(path.get_type() == Variant::STRING) {
-            std::string strPath = std::string(((String)path).utf8().ptr());
+            std::string strPath = std::string(((String)path).utf8().get_data());
             childUpdates[strPath] = entryValues;
         }
     }

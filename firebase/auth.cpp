@@ -38,7 +38,7 @@ void FirebaseAuth::sign_in_anonymously()
 
 void FirebaseAuth::sign_in_facebook(String token)
 {
-    firebase::auth::Credential credential = firebase::auth::FacebookAuthProvider::GetCredential(token.utf8().ptr());
+    firebase::auth::Credential credential = firebase::auth::FacebookAuthProvider::GetCredential(token.utf8().get_data());
     firebase::auth::User* current_user = auth->current_user();
     if(current_user != NULL) {
         print_line("[Auth] Start link Facebook account to existing user");
