@@ -17,7 +17,8 @@ Variant Convertor::fromFirebaseVariant(const firebase::Variant& arg)
         for(std::map<firebase::Variant, firebase::Variant>::const_iterator i=map.begin(); i!=map.end(); i++) {
             firebase::Variant first = i->first;
             firebase::Variant second = i->second;
-            String key = String(first.string_value());
+            String key;
+            key.parse_utf8(first.string_value());
             dictRes[key] = fromFirebaseVariant(second);
         }
         return Variant(dictRes);
@@ -28,7 +29,11 @@ Variant Convertor::fromFirebaseVariant(const firebase::Variant& arg)
     } else if(arg.is_bool()) {
         return Variant(arg.bool_value());
     } else if(arg.is_string()) {
-        return Variant(arg.string_value());
+        String str;
+        if(!str.parse_utf8(arg.string_value()))
+            return Variant(str);
+        else
+            return Variant(arg.string_value());
     } else {
         return Variant((void*)NULL);
     }
