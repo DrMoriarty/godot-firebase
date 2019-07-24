@@ -88,6 +88,12 @@ String FirebaseAuth::uid()
     return String(current_user->uid().c_str());
 }
 
+String FirebaseAuth::photo_url()
+{
+    firebase::auth::User* current_user = auth->current_user();
+    return String(current_user->photo_url().c_str());
+}
+
 void FirebaseAuth::sign_out()
 {
     auth->SignOut();
@@ -101,6 +107,7 @@ void FirebaseAuth::_bind_methods() {
     ClassDB::bind_method(D_METHOD("user_name"), &FirebaseAuth::user_name);
     ClassDB::bind_method(D_METHOD("email"), &FirebaseAuth::email);
     ClassDB::bind_method(D_METHOD("uid"), &FirebaseAuth::uid);
+    ClassDB::bind_method(D_METHOD("photo_url"), &FirebaseAuth::photo_url);
     ClassDB::bind_method(D_METHOD("sign_out"), &FirebaseAuth::sign_out);
     ADD_SIGNAL(MethodInfo("logged_in"));
 }

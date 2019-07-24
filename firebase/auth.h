@@ -25,6 +25,7 @@ class FirebaseAuth : public Reference {
     String user_name();
     String email();
     String uid();
+    String photo_url();
     void sign_out();
 
     void OnCreateUserCallback(const firebase::Future<firebase::auth::User*>& result, void* user_data);

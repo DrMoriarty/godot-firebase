@@ -7,8 +7,8 @@ def can_build(env, platform):
 
 def configure(env):
     if (env['platform'] == 'android'):
-	env.android_add_default_config("applicationId 'free.games.match.three.puzzle.galactic.adventure.android'")
-	env.android_add_default_config("testApplicationId 'free.games.match.three.puzzle.galactic.adventure.android'")
+	#env.android_add_default_config("applicationId 'free.games.match.three.puzzle.galactic.adventure.android'")
+	#env.android_add_default_config("testApplicationId 'free.games.match.three.puzzle.galactic.adventure.android'")
 	env.android_add_dependency("implementation 'com.android.support:support-v4:28.0.0'")
 	#env.android_add_dependency("implementation 'com.android.support:preference-v7:28.0.0'")
 	#env.android_add_dependency("implementation 'com.android.support:appcompat-v7:28.0.0'")

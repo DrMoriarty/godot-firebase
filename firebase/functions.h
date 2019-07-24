@@ -17,7 +17,9 @@ class FirebaseFunctions : public Reference {
     
     FirebaseFunctions();
     void CallFunction(const String& function_name);
+    void CallFunctionWithId(const String& function_name, const String& callback_id);
     void CallFunctionWithArg(const String& function_name, const Dictionary& params);
+    void CallFunctionWithIdAndArg(const String& function_name, const String& callback_id, const Dictionary& params);
 
     void ProcessFunctionResult(const std::string& function_name, const firebase::Variant & data);
 };
