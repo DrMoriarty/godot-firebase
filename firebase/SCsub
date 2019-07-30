@@ -13,6 +13,7 @@ if env['platform'] == 'android':
         env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_auth.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_admob.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_functions.a")])
+        env.Prepend(LIBS=[File("libs/android/armeabi/c++/libfirebase_messaging.a")])
     elif env['android_arch'] == 'armv7':
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_app.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_analytics.a")])
@@ -21,6 +22,7 @@ if env['platform'] == 'android':
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_auth.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_admob.a")])
         env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_functions.a")])
+        env.Prepend(LIBS=[File("libs/android/armeabi-v7a/c++/libfirebase_messaging.a")])
     elif env['android_arch'] == 'arm64v8':
         env.Prepend(LIBS=[File("libs/android/arm64-v8a/c++/libfirebase_app.a")])
         env.Prepend(LIBS=[File("libs/android/arm64-v8a/c++/libfirebase_analytics.a")])
@@ -29,6 +31,7 @@ if env['platform'] == 'android':
         env.Prepend(LIBS=[File("libs/android/arm64-v8a/c++/libfirebase_auth.a")])
         env.Prepend(LIBS=[File("libs/android/arm64-v8a/c++/libfirebase_admob.a")])
         env.Prepend(LIBS=[File("libs/android/arm64-v8a/c++/libfirebase_functions.a")])
+        env.Prepend(LIBS=[File("libs/android/arm64-v8a/c++/libfirebase_messaging.a")])
     elif env['android_arch'] == 'x86':
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_app.a")])
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_analytics.a")])
@@ -37,6 +40,7 @@ if env['platform'] == 'android':
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_auth.a")])
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_admob.a")])
         env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_functions.a")])
+        env.Prepend(LIBS=[File("libs/android/x86/c++/libfirebase_messaging.a")])
     elif env['android_arch'] == 'x86_64':
         env.Prepend(LIBS=[File("libs/android/x86_64/c++/libfirebase_app.a")])
         env.Prepend(LIBS=[File("libs/android/x86_64/c++/libfirebase_analytics.a")])
@@ -45,6 +49,7 @@ if env['platform'] == 'android':
         env.Prepend(LIBS=[File("libs/android/x86_64/c++/libfirebase_auth.a")])
         env.Prepend(LIBS=[File("libs/android/x86_64/c++/libfirebase_admob.a")])
         env.Prepend(LIBS=[File("libs/android/x86_64/c++/libfirebase_functions.a")])
+        env.Prepend(LIBS=[File("libs/android/x86_64/c++/libfirebase_messaging.a")])
     else:
         print 'WARN: Unsupported architecture for firebase module: '+env['android_arch']
 elif env['platform'] == 'iphone':
@@ -56,4 +61,5 @@ elif env['platform'] == 'iphone':
     env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_auth.a")])
     env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_admob.a")])
     env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_functions.a")])
+    env.Prepend(LIBS=[File("libs/ios/universal/libfirebase_messaging.a")])
     

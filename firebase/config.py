@@ -39,6 +39,8 @@ def configure(env):
 	env.android_add_dependency("implementation 'com.google.firebase:firebase-functions:16.3.0'")
 	# Messaging
 	env.android_add_dependency("implementation 'com.google.firebase:firebase-messaging:17.3.4'")
+	env.android_add_flat_dir('../../../modules/firebase/libs/android')
+	env.android_add_dependency("implementation 'com.google.firebase.messaging.cpp:firebase_messaging_cpp@aar'")
 	# In-App Messaging
 	env.android_add_dependency("implementation 'com.google.firebase:firebase-inappmessaging-display:17.1.1'")
     elif (env['platform'] == 'iphone'):
