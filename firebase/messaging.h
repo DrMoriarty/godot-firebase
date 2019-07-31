@@ -21,10 +21,14 @@ class FirebaseMessaging : public Reference {
     static bool inited;
     static void _bind_methods();
     static FirebaseMessagingListener* listener;
+    static String _token;
 
     public:
     
     FirebaseMessaging();
+    Variant token();
+    void setToken(String token);
+    void setMessage(const firebase::messaging::Message& message);
 };
 
 #endif // FirebaseMessaging_h

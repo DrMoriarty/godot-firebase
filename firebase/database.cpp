@@ -22,7 +22,7 @@ void FirebaseChildListener::OnCancelled(const firebase::database::Error & error,
 
 void FirebaseChildListener::OnChildAdded(const firebase::database::DataSnapshot & snapshot, const char *previous_sibling_key)
 {
-    print_line(String("[RTDB] ChildListener: OnChildAdded ") + snapshot.key());
+    //print_line(String("[RTDB] ChildListener: OnChildAdded ") + snapshot.key());
 
     String key(snapshot.key());
     firebase::Variant val = snapshot.value();
@@ -32,7 +32,7 @@ void FirebaseChildListener::OnChildAdded(const firebase::database::DataSnapshot 
 
 void FirebaseChildListener::OnChildChanged(const firebase::database::DataSnapshot & snapshot, const char *previous_sibling_key)
 {
-    print_line(String("[RTDB] ChildListener: OnChildChanged ") + snapshot.key());
+    //print_line(String("[RTDB] ChildListener: OnChildChanged ") + snapshot.key());
 
     String key(snapshot.key());
     firebase::Variant val = snapshot.value();
@@ -42,7 +42,7 @@ void FirebaseChildListener::OnChildChanged(const firebase::database::DataSnapsho
 
 void FirebaseChildListener::OnChildMoved(const firebase::database::DataSnapshot & snapshot, const char *previous_sibling_key)
 {
-    print_line(String("[RTDB] ChildListener: OnChildMoved ") + snapshot.key());
+    //print_line(String("[RTDB] ChildListener: OnChildMoved ") + snapshot.key());
 
     String key(snapshot.key());
     firebase::Variant val = snapshot.value();
@@ -52,7 +52,7 @@ void FirebaseChildListener::OnChildMoved(const firebase::database::DataSnapshot 
 
 void FirebaseChildListener::OnChildRemoved(const firebase::database::DataSnapshot & snapshot)
 {
-    print_line(String("[RTDB] ChildListener: OnChildRemoved ") + snapshot.key());
+    //print_line(String("[RTDB] ChildListener: OnChildRemoved ") + snapshot.key());
 
     String key(snapshot.key());
     firebase::Variant val = snapshot.value();
