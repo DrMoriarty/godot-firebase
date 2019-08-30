@@ -35,7 +35,7 @@ Variant FirebaseMessaging::token()
     if(_token.size() > 0) {
         return Variant(_token);
     } else {
-        return Variant(NULL);
+        return Variant();
     }
 }
 
