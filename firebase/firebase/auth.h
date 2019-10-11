@@ -56,28 +56,33 @@ class PhoneAuthProvider;
 ///
 /// For example:
 /// @code{.cpp}
-///  // Get the Auth class for your App.
-///  firebase::auth::Auth* auth = firebase::auth::Auth::GetAuth(app);
 ///
-///  // Request anonymous sign-in and wait until asynchronous call completes.
-///  firebase::Future<firebase::auth::User*> sign_in_future =
-///      auth->SignInAnonymously();
-///  while (sign_in_future.status() == firebase::kFutureStatusPending) {
-///    Wait(100);
-///    printf("Signing in...\n");
-///  }
+/// // Get the Auth class for your App.
+/// firebase::auth::Auth* auth = firebase::auth::Auth::GetAuth(app);
 ///
-///  // Print sign in results.
-///  const firebase::auth::AuthError error =
-///      static_cast<firebase::auth::AuthError>(sign_in_future.error());
-///  if (error != firebase::auth::kAuthErrorNone) {
-///    printf("Sign in failed with error `%s`\n",
-///           sign_in_future.error_message());
-///  } else {
-///    firebase::auth::User* user = *sign_in_future.result();
-///    printf("Signed in as %s user.\n",
-///           user->Anonymous() ? "an anonymous" : "a non-anonymous");
-///  }
+/// // Request anonymous sign-in and wait until asynchronous call completes.
+/// firebase::Future<firebase::auth::User*> sign_in_future =
+///     auth->SignInAnonymously();
+/// while(sign_in_future.status() == firebase::kFutureStatusPending) {
+///     // when polling, like this, make sure you service your platform's
+///     // message loop
+///     // see https://github.com/firebase/quickstart-cpp for a sample
+///     ProcessEvents(300);
+///     std::cout << "Signing in...\n";
+/// }
+///
+/// const firebase::auth::AuthError error =
+///     static_cast<firebase::auth::AuthError>(sign_in_future.error());
+/// if (error != firebase::auth::kAuthErrorNone) {
+///     std::cout << "Sign in failed with error '"
+///         << sign_in_future.error_message() << "'\n";
+/// } else {
+///     firebase::auth::User* user = *sign_in_future.result();
+///     // is_anonymous from Anonymous
+///     std::cout << "Signed in as "
+///         << (user->is_anonymous() ? "an anonymous" : "a non-anonymous")
+///         << " user\n";
+/// }
 /// @endcode
 /// @endif
 class Auth {
@@ -93,9 +98,9 @@ class Auth {
   ~Auth();
 
   /// Synchronously gets the cached current user, or nullptr if there is none.
-  /// Current user might not be available immediately after Auth is created, if
-  /// a user has signed in before. It is recommended to use AuthStateListener as
-  /// the source of truth whether a user has logged in or not.
+  /// @note This function may block and wait until the Auth instance finishes
+  /// loading the saved user's state. This should only happen for a short
+  /// period of time after the Auth instance is created.
   User* current_user();
 
   // ----- Providers -------------------------------------------------------
@@ -172,6 +177,7 @@ class Auth {
 
   /// Get results of the most recent call to @ref SignInWithCredential.
   Future<User*> SignInWithCredentialLastResult() const;
+
 
   /// Asynchronously logs into Firebase with the given credentials.
   ///
@@ -394,15 +400,28 @@ class Auth {
   friend class IdTokenRefreshListener;
   friend class IdTokenRefreshThread;
   friend class UserDataPersist;
+  friend class UserDesktopTest;
+  friend class AuthDesktopTest;
 
   friend void EnableTokenAutoRefresh(AuthData* authData);
   friend void DisableTokenAutoRefresh(AuthData* authData);
   friend void ResetTokenRefreshCounter(AuthData* authData);
   /// @endcond
 
+  // Find Auth instance using App.  Return null if the instance does not exist.
+  static Auth* FindAuth(App* app);
+
   // Provides access to the auth token for the current user.  Returns the
   // current user's auth token, or an empty string, if there isn't one.
+  // Note that this can potentially return an expired token from the cache.
   static bool GetAuthTokenForRegistry(App* app, void* /*unused*/, void* out);
+
+  // Provides asynchronous access to the auth token for the current user. Allow
+  // the caller to force-refresh the token.  Even without force-refresh, this
+  // ensure the future contain a fresh current user's auth token.  This function
+  // returns invalid future if user data is not available.
+  static bool GetAuthTokenAsyncForRegistry(App* app, void* force_refresh,
+                                           void* out_future);
 
   // Starts and stops a thread to ensure that the cached auth token is never
   // kept long enough for it to expire.  Refcounted, so multiple classes can
@@ -491,6 +510,9 @@ class IdTokenListener {
   /// The Auths with which this listener has been registered.
   std::vector<Auth*> auths_;
 };
+
+
+
 
 }  // namespace auth
 }  // namespace firebase

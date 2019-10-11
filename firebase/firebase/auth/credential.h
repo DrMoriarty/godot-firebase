@@ -18,15 +18,18 @@
 #define FIREBASE_AUTH_CLIENT_CPP_SRC_INCLUDE_FIREBASE_AUTH_CREDENTIAL_H_
 
 #include <stdint.h>
+
 #include <string>
+
 #include "firebase/internal/common.h"
+#include "firebase/auth/types.h"
 
 namespace firebase {
 
 // Predeclarations.
 class App;
 
-template<typename T>
+template <typename T>
 class Future;
 
 namespace auth {
@@ -66,10 +69,10 @@ class Credential {
   /// @see EmailAuthProvider::GetCredential()
   /// @see FacebookAuthProvider::GetCredential()
   /// @see GoogleAuthProvider::GetCredential()
-  explicit Credential(void* impl) : impl_(impl) {}
+  explicit Credential(void* impl) : impl_(impl), error_code_(kAuthErrorNone) {}
 
  public:
-  Credential() : impl_(NULL) {}
+  Credential() : impl_(nullptr), error_code_(kAuthErrorNone) {}
   ~Credential();
 
   /// Copy constructor.
@@ -88,16 +91,20 @@ class Credential {
   /// @returns True if the credential is valid, false otherwise.
   bool is_valid() const;
 
-  /// @cond FIREBASE_APP_INTERNAL
  protected:
   /// @cond FIREBASE_APP_INTERNAL
   friend class Auth;
   friend class User;
-  /// @endcond
 
   /// Platform-specific implementation.
   /// For example, FIRAuthCredential* on iOS.
   void* impl_;
+
+  // If not kAuthErrorNone, then use this error code and string to override
+  // whatever error we would normally return when trying to sign-in with this
+  // credential.
+  AuthError error_code_;
+  std::string error_message_;
   /// @endcond
 };
 
@@ -126,6 +133,7 @@ class FacebookAuthProvider {
   ///
   /// @returns New Credential.
   static Credential GetCredential(const char* access_token);
+
 };
 
 /// @brief Use an access token provided by GitHub to authenticate.
@@ -137,6 +145,7 @@ class GitHubAuthProvider {
   ///
   /// @returns New Credential.
   static Credential GetCredential(const char* token);
+
 };
 
 /// @brief Use an ID token and access token provided by Google to authenticate.
@@ -150,6 +159,7 @@ class GoogleAuthProvider {
   /// @returns New Credential.
   static Credential GetCredential(const char* id_token,
                                   const char* access_token);
+
 };
 
 /// @brief Use a server auth code provided by Google Play Games to authenticate.
@@ -161,6 +171,7 @@ class PlayGamesAuthProvider {
   ///
   /// @returns New Credential.
   static Credential GetCredential(const char* server_auth_code);
+
 };
 
 /// @brief Use a token and secret provided by Twitter to authenticate.
@@ -173,6 +184,7 @@ class TwitterAuthProvider {
   ///
   /// @returns New Credential.
   static Credential GetCredential(const char* token, const char* secret);
+
 };
 
 /// @brief OAuth2.0+UserInfo auth provider (OIDC compliant and non-compliant).

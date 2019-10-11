@@ -27,6 +27,7 @@
 -keep,includedescriptorclasses public class com.google.firebase.auth.GithubAuthProvider{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.GoogleAuthProvider{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.OAuthProvider{ *; }
+-keep,includedescriptorclasses public class com.google.firebase.auth.OAuthProvider$Builder{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthCredential { *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthCredential{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.auth.PhoneAuthProvider { *; }

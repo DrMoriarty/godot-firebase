@@ -1,20 +1,6 @@
--keep,includedescriptorclasses public class com.google.android.gms.appinvite.AppInvite { *; }
--keep,includedescriptorclasses public class com.google.android.gms.appinvite.AppInviteApi { *; }
--keep,includedescriptorclasses public class com.google.android.gms.appinvite.AppInviteInvitation { *; }
--keep,includedescriptorclasses public class com.google.android.gms.appinvite.AppInviteInvitation$IntentBuilder { *; }
--keep,includedescriptorclasses public class com.google.android.gms.appinvite.AppInviteInvitation$IntentBuilder$PlatformMode { *; }
--keep,includedescriptorclasses public class com.google.android.gms.appinvite.AppInviteInvitationResult { *; }
--keep,includedescriptorclasses public class com.google.android.gms.appinvite.AppInviteReferral { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.Api { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.GoogleApiClient { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.GoogleApiClient$Builder { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.GoogleApiClient$ConnectionCallbacks { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.GoogleApiClient$OnConnectionFailedListener { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.PendingResult { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.Result { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.ResultCallback { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.api.Status { *; }
--keep,includedescriptorclasses public class com.google.android.gms.common.ConnectionResult { *; }
+-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnFailureListener { *; }
+-keep,includedescriptorclasses public class com.google.android.gms.tasks.OnSuccessListener { *; }
+-keep,includedescriptorclasses public class com.google.android.gms.tasks.Task { *; }
 -keep,includedescriptorclasses public class com.google.firebase.app.internal.cpp.Log { *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$AndroidParameters$Builder{ *; }
@@ -23,7 +9,9 @@
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$IosParameters$Builder{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$ItunesConnectAnalyticsParameters$Builder{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.DynamicLink$SocialMetaTagParameters$Builder{ *; }
+-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.FirebaseDynamicLinks { *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.FirebaseDynamicLinks{ *; }
+-keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.PendingDynamicLinkData { *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.PendingDynamicLinkData{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.ShortDynamicLink{ *; }
 -keep,includedescriptorclasses public class com.google.firebase.dynamiclinks.ShortDynamicLink$Suffix{ *; }
